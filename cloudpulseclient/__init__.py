@@ -16,4 +16,4 @@ import pbr.version
 
 
 __version__ = pbr.version.VersionInfo(
-    'cloudpulseclient').version_string()
+    'python-cloudpulseclient').version_string()
