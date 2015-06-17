@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Code-Review+2: Vinod Pandarinathan <vpandari@cisco.com>
+Workflow+1: Vinod Pandarinathan <vpandari@cisco.com>
+Submitted-by: Jenkins
+Submitted-at: Wed, 17 Jun 2015 05:43:55 +0000
+Reviewed-on: https://review.openstack.org/191756
+Project: stackforge/python-cloudpulseclient
+Branch: refs/heads/master
