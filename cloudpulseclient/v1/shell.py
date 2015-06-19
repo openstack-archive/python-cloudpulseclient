@@ -24,7 +24,8 @@ def do_result(cs, args):
     healtchecks = cs.healthcheck.list()
     columns = ('uuid', 'id', 'name', 'testtype', 'state')
     utils.print_list(healtchecks, columns,
-                     {'versions': _print_list_field('versions')})
+                     {'versions': _print_list_field('versions')},
+                     sortby_index=1)
 
 
 @utils.arg('--name',
