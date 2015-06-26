@@ -28,23 +28,21 @@ def do_result(cs, args):
                      sortby_index=1)
 
 
-@utils.arg('--name',
+@utils.arg('name',
            metavar='<name>',
-           required=True,
-           help='Name of the healthcheck to create.')
-@utils.arg('--state',
-           required=True,
-           metavar='<state>',
-           help='state of the healthcheck')
-@utils.arg('--id',
-           required=True,
-           metavar='<id>',
-           help='id of the healthcheck')
+           help='Name of the healthcheck to run')
+@utils.arg('--extension',
+           metavar='<extension>',
+           help='Name of the health check extension.')
+@utils.arg('--test-args',
+           metavar='<KEY1=VALUE1;KEY2=VALUE2...>',
+           help='Arguments in key,value pair for the health check extension.')
+@utils.arg('--args-file',
+           metavar='<FILE>',
+           help='Path to the file which is needed by the extension.')
 def do_run(cs, args):
     opts = {}
     opts['name'] = args.name
-    opts['id'] = args.id
-    opts['state'] = args.state
     healtcheck = cs.healthcheck.create(**opts)
     utils.print_dict(healtcheck._info)
 
