@@ -21,6 +21,7 @@ def _print_list_field(field):
 
 
 def do_result(cs, args):
+    """List all the tests"""
     healtchecks = cs.healthcheck.list()
     columns = ('uuid', 'id', 'name', 'testtype', 'state')
     utils.print_list(healtchecks, columns,
@@ -41,6 +42,7 @@ def do_result(cs, args):
            metavar='<FILE>',
            help='Path to the file which is needed by the extension.')
 def do_run(cs, args):
+    """Run new test"""
     opts = {}
     opts['name'] = args.name
     healtcheck = cs.healthcheck.create(**opts)
@@ -52,6 +54,7 @@ def do_run(cs, args):
            nargs='+',
            help='ID or name of the (cpulse)s to delete.')
 def do_show(cs, args):
+    """Show the results of the test"""
     for id in args.cpulse:
         healthcheck = cs.healthcheck.get(id)
         utils.print_dict(healthcheck._info)
@@ -62,6 +65,7 @@ def do_show(cs, args):
            nargs='+',
            help='ID or name of the (cpulse)s to delete.')
 def do_delete(cs, args):
+    """Delete the test"""
     for id in args.cpulse:
         try:
             cs.healthcheck.delete(id)
