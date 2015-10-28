@@ -20,9 +20,21 @@ def _print_list_field(field):
     return lambda obj: ', '.join(getattr(obj, field))
 
 
+@utils.arg('--failed',
+    dest='failed',
+    action="store_true",
+    default=False,
+    help='Only display failed tests.')
+@utils.arg('--period',
+           metavar='<period>',
+           help='List all tests in the last x hours.')
 def do_result(cs, args):
     """List all the tests"""
-    healtchecks = cs.healthcheck.list()
+    search_opts = {
+        'failed': args.failed,
+        'period': args.period,
+    }
+    healtchecks = cs.healthcheck.list(search_opts=search_opts)
     columns = ('uuid', 'id', 'name', 'testtype', 'state')
     utils.print_list(healtchecks, columns,
                      {'versions': _print_list_field('versions')},

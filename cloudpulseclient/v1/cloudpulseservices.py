@@ -14,6 +14,8 @@
 # limitations under the License.
 
 from cloudpulseclient.common import base
+import six
+from six.moves.urllib import parse
 
 
 class HealthCheck(base.Resource):
@@ -28,9 +30,23 @@ class HealthCheckManager(base.Manager):
     def _path(id=None):
         return '/v1/cpulse/%s' % id if id else '/v1/cpulse'
 
-    def list(self, marker=None, limit=None, sort_key=None,
-             sort_dir=None, detail=False):
-        return self._list(self._path(''), "cpulses")
+    def list(self, search_opts=None, marker=None,limit=None,
+             sort_key=None, sort_dir=None, detail=False):
+        if search_opts is None:
+            search_opts = {}
+        qparams = {}
+        for opt, val in six.iteritems(search_opts):
+            if val:
+                if isinstance(val, six.text_type):
+                    val = val.encode('utf-8')
+                qparams[opt] = val
+        if qparams:
+            items = list(qparams.items())
+            new_qparams = sorted(items, key=lambda x: x[0])
+            query_string = "?%s" % parse.urlencode(new_qparams)
+        else:
+            query_string = ""
+        return self._list("%s%s" % (self._path(''),query_string) , "cpulses")
 
     def create(self, **kwargs):
         new = {}
