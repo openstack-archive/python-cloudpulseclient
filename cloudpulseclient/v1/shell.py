@@ -64,7 +64,7 @@ def do_run(cs, args):
 @utils.arg('cpulse',
            metavar='<cpulse>',
            nargs='+',
-           help='ID or name of the (cpulse)s to delete.')
+           help='ID or name of the (cpulse)s to show.')
 def do_show(cs, args):
     """Show the results of the test"""
     for id in args.cpulse:
