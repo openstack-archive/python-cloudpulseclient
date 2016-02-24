@@ -78,6 +78,7 @@ def positive_non_zero_float(text):
 
 
 class SecretsHelper(object):
+
     def __init__(self, args, client):
         self.args = args
         self.client = client
@@ -131,7 +132,7 @@ class SecretsHelper(object):
         if not HAS_KEYRING or not self.args.os_cache:
             return
         if (auth_token == self.auth_token and
-           management_url == self.management_url):
+                management_url == self.management_url):
             # Nothing changed....
             return
         if not all([management_url, auth_token, tenant_id]):
@@ -314,6 +315,11 @@ class OpenStackCloudPulseShell(object):
                             'verifying a TLS (https) server certificate. '
                             'Defaults to env[OS_CACERT].')
 
+        parser.add_argument('--insecure',
+                            default=False,
+                            action='store_true',
+                            help="Insecure connection to cloudpulse url.")
+
         parser.add_argument('--bypass-url',
                             metavar='<bypass-url>',
                             default=cliutils.env('BYPASS_URL', default=None),
@@ -434,6 +440,8 @@ class OpenStackCloudPulseShell(object):
              args.os_auth_url, args.os_auth_system, args.endpoint_type,
              args.service_type, args.bypass_url)
         )
+        insecure = args.insecure
+        cacert = args.os_cacert
 
         if os_auth_system and os_auth_system != "keystone":
             auth_plugin = auth.load_plugin(os_auth_system)
@@ -474,12 +482,12 @@ class OpenStackCloudPulseShell(object):
                     os_auth_url = auth_plugin.get_auth_url()
 
             if not os_auth_url:
-                    raise exc.CommandError("You must provide an auth url "
-                                           "via either --os-auth-url or "
-                                           "env[OS_AUTH_URL] or specify an "
-                                           "auth_system which defines a "
-                                           "default url with --os-auth-system "
-                                           "or env[OS_AUTH_SYSTEM]")
+                raise exc.CommandError("You must provide an auth url "
+                                       "via either --os-auth-url or "
+                                       "env[OS_AUTH_URL] or specify an "
+                                       "auth_system which defines a "
+                                       "default url with --os-auth-system "
+                                       "or env[OS_AUTH_SYSTEM]")
 
 # NOTE: The Cloudpulse client authenticates when you create it. So instead of
 #       creating here and authenticating later, which is what the novaclient
@@ -520,6 +528,7 @@ class OpenStackCloudPulseShell(object):
 
     def _dump_timings(self, timings):
         class Tyme(object):
+
             def __init__(self, url, seconds):
                 self.url = url
                 self.seconds = seconds
@@ -563,6 +572,7 @@ class OpenStackCloudPulseShell(object):
 
 # I'm picky about my shell help.
 class OpenStackHelpFormatter(argparse.HelpFormatter):
+
     def start_section(self, heading):
         # Title-case the headings
         heading = '%s%s' % (heading[0].upper(), heading[1:])

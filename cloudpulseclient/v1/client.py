@@ -21,10 +21,12 @@ from cloudpulseclient.v1 import cloudpulseservices as healthcheck
 
 
 class Client(object):
+
     def __init__(self, username=None, api_key=None, project_id=None,
                  project_name=None, auth_url=None, cloudpulse_url=None,
                  endpoint_type='publicURL', service_type='container',
-                 region_name=None, input_auth_token=None):
+                 region_name=None, input_auth_token=None, insecure=False,
+                 cacert=None):
 
         keystone = None
         if not input_auth_token:
@@ -32,7 +34,10 @@ class Client(object):
                                                 api_key=api_key,
                                                 auth_url=auth_url,
                                                 project_id=project_id,
-                                                project_name=project_name)
+                                                project_name=project_name,
+                                                insecure=insecure,
+                                                cacert=cacert)
+
             input_auth_token = keystone.auth_token
         if not input_auth_token:
             raise RuntimeError("Not Authorized")
@@ -42,6 +47,8 @@ class Client(object):
                 username=username,
                 api_key=api_key,
                 auth_url=auth_url,
+                insecure=insecure,
+                cacert=cacert,
                 token=input_auth_token,
                 project_id=project_id,
                 project_name=project_name)
@@ -52,6 +59,8 @@ class Client(object):
 
         http_cli_kwargs = {
             'token': input_auth_token,
+            'insecure': insecure,
+            'ca_file': cacert,
             # TODO(yuanying): - use insecure
             # 'insecure': kwargs.get('insecure'),
             # TODO(yuanying): - use timeout
@@ -70,9 +79,10 @@ class Client(object):
 
     @staticmethod
     def get_keystone_client(username=None, api_key=None, auth_url=None,
-                            token=None, project_id=None, project_name=None):
+                            insecure=False, cacert=None, token=None,
+                            project_id=None, project_name=None):
         if not auth_url:
-                raise RuntimeError("No auth url specified")
+            raise RuntimeError("No auth url specified")
         imported_client = (keystone_client_v2 if "v2.0" in auth_url
                            else keystone_client_v3)
 
@@ -80,6 +90,8 @@ class Client(object):
             username=username,
             password=api_key,
             token=token,
+            insecure=insecure,
+            cacert=cacert,
             tenant_id=project_id,
             tenant_name=project_name,
             auth_url=auth_url,
