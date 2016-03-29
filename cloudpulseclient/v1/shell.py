@@ -27,7 +27,7 @@ def _print_list_field(field):
            help='Display only failed tests.')
 @utils.arg('--period',
            metavar='<period>',
-           help='List all tests in the last x hours.')
+           help='List all tests in the last x minutes.')
 def do_result(cs, args):
     """List all the tests"""
     search_opts = {
