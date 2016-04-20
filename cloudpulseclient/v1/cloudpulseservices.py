@@ -18,7 +18,14 @@ import six
 from six.moves.urllib import parse
 
 
+class HealthCheckTest(base.Resource):
+
+    def __repr__(self):
+        return str(self._info)
+
+
 class HealthCheck(base.Resource):
+
     def __repr__(self):
         return "<Cpulse %s>" % self._info
 
@@ -62,3 +69,6 @@ class HealthCheckManager(base.Manager):
             return self._list(self._path(id))[0]
         except IndexError:
             return None
+
+    def get_test_list(self):
+        return self._list(self._path('list_tests'), obj_class=HealthCheckTest)
