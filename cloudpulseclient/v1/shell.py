@@ -44,15 +44,6 @@ def do_result(cs, args):
 @utils.arg('name',
            metavar='<name>',
            help='Name of the healthcheck to run')
-@utils.arg('--extension',
-           metavar='<extension>',
-           help='Name of the health check extension.')
-@utils.arg('--test-args',
-           metavar='<KEY1=VALUE1;KEY2=VALUE2...>',
-           help='Arguments in key,value pair for the health check extension.')
-@utils.arg('--args-file',
-           metavar='<FILE>',
-           help='Path to the file which is needed by the extension.')
 def do_run(cs, args):
     """Run new test"""
     opts = {}
@@ -70,6 +61,13 @@ def do_show(cs, args):
     for id in args.cpulse:
         healthcheck = cs.healthcheck.get(id)
         utils.print_dict(healthcheck._info)
+
+
+def do_test_list(cs, args):
+    """Show a list of scenarios and tests in each scenario"""
+    healthcheck = cs.healthcheck.get_test_list()
+    utils.print_dict(
+        healthcheck[0]._info, dict_property="Scenarios", dict_value="Tests")
 
 
 @utils.arg('cpulse',
