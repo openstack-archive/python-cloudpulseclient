@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from cloudpulseclient import exceptions
 from cloudpulseclient.openstack.common import cliutils as utils
 
 
@@ -41,13 +42,34 @@ def do_result(cs, args):
                      sortby_index=1)
 
 
-@utils.arg('name',
+@utils.arg('--name',
            metavar='<name>',
            help='Name of the healthcheck to run')
+@utils.arg('--all-tests',
+           metavar='<all_tests>',
+           action='store_const',
+           const='all_tests',
+           help="Run all tests")
+@utils.arg('--all-endpoint-tests',
+           metavar='<all_endpoint_tests>',
+           action='store_const',
+           const='all_endpoint_tests',
+           help="Run all endpoint tests")
+@utils.arg('--all-operator-tests',
+           metavar='<all_operator_tests>',
+           action='store_const',
+           const='all_operator_tests',
+           help="Run all endpoint tests")
 def do_run(cs, args):
     """Run new test"""
+    if not any([args.name, args.all_operator_tests,
+                args.all_tests, args.all_endpoint_tests]):
+        raise exceptions.CommandError(
+            ("Usage: cloudpulse --name <testname>."
+             "See 'cloudpulse help run' for details"))
     opts = {}
-    opts['name'] = args.name
+    opts['name'] = args.name or args.all_operator_tests or \
+        args.all_tests or args.all_endpoint_tests
     healtcheck = cs.healthcheck.create(**opts)
     utils.print_dict(healtcheck._info)
 
