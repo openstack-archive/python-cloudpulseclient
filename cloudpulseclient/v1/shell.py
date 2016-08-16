@@ -25,12 +25,12 @@ def _print_list_field(field):
            dest='failed',
            action="store_true",
            default=False,
-           help='Display only failed tests.')
+           help='Display only test results that have failed.')
 @utils.arg('--period',
            metavar='<period>',
-           help='List all tests in the last x minutes.')
+           help='List tests results that have been run in the last x minutes.')
 def do_result(cs, args):
-    """List all the tests"""
+    """List all the test results"""
     search_opts = {
         'failed': args.failed,
         'period': args.period,
@@ -44,7 +44,7 @@ def do_result(cs, args):
 
 @utils.arg('--name',
            metavar='<name>',
-           help='Name of the healthcheck to run')
+           help='Name of the test to run')
 @utils.arg('--all-tests',
            metavar='<all_tests>',
            action='store_const',
@@ -59,9 +59,9 @@ def do_result(cs, args):
            metavar='<all_operator_tests>',
            action='store_const',
            const='all_operator_tests',
-           help="Run all endpoint tests")
+           help="Run all operator tests")
 def do_run(cs, args):
-    """Run new test"""
+    """Run a new manual test"""
     if not any([args.name, args.all_operator_tests,
                 args.all_tests, args.all_endpoint_tests]):
         raise exceptions.CommandError(
@@ -77,9 +77,9 @@ def do_run(cs, args):
 @utils.arg('cpulse',
            metavar='<cpulse>',
            nargs='+',
-           help='ID or name of the (cpulse)s to show.')
+           help='Id of the test result to show.')
 def do_show(cs, args):
-    """Show the results of the test"""
+    """Show the detailed result of a test"""
     for id in args.cpulse:
         healthcheck = cs.healthcheck.get(id)
         utils.print_dict(healthcheck._info)
@@ -95,9 +95,9 @@ def do_test_list(cs, args):
 @utils.arg('cpulse',
            metavar='<cpulse>',
            nargs='+',
-           help='ID or name of the (cpulse)s to delete.')
+           help='Id of the test result to delete.')
 def do_delete(cs, args):
-    """Delete the test"""
+    """Delete the test result"""
     for id in args.cpulse:
         try:
             cs.healthcheck.delete(id)
