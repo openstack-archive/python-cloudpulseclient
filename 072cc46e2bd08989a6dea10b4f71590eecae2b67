@@ -1,0 +1,8 @@
+Code-Review+2: Anand Shanmugam <anand1712@gmail.com>
+Workflow+1: Anand Shanmugam <anand1712@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 16 Aug 2016 21:11:24 +0000
+Reviewed-on: https://review.openstack.org/356105
+Project: openstack/python-cloudpulseclient
+Branch: refs/heads/stable/liberty
