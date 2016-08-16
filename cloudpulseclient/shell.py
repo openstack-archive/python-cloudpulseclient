@@ -545,7 +545,7 @@ class OpenStackCloudPulseShell(object):
         """Prints arguments for bash-completion.
 
         Prints all of the commands and options to stdout so that the
-        cloudpuls.bash_completion script doesn't have to hard code them.
+        cloudpulse.bash_completion script doesn't have to hard code them.
         """
         commands = set()
         options = set()
