@@ -277,6 +277,12 @@ class OpenStackCloudPulseShell(object):
                             default=cliutils.env('OS_TENANT_ID'),
                             help='Defaults to env[OS_TENANT_ID].')
 
+        parser.add_argument('--os-project-name',
+                            metavar='<auth-project-name>',
+                            default=cliutils.env('OS_PROJECT_NAME',
+                                                 default=None),
+                            help='Defaults to env[OS_PROJECT_NAME].')
+
         parser.add_argument('--service-type',
                             metavar='<service-type>',
                             help='Defaults to container for all '
@@ -436,9 +442,9 @@ class OpenStackCloudPulseShell(object):
         (os_username, os_tenant_name, os_tenant_id,
          os_auth_url, os_auth_system, endpoint_type,
          service_type, bypass_url) = (
-            (args.os_username, args.os_tenant_name, args.os_tenant_id,
-             args.os_auth_url, args.os_auth_system, args.endpoint_type,
-             args.service_type, args.bypass_url)
+            (args.os_username, args.os_tenant_name or args.os_project_name,
+             args.os_tenant_id, args.os_auth_url, args.os_auth_system,
+             args.endpoint_type, args.service_type, args.bypass_url)
         )
         insecure = args.insecure
         cacert = args.os_cacert
