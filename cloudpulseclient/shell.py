@@ -441,9 +441,11 @@ class OpenStackCloudPulseShell(object):
 
         (os_username, os_tenant_name, os_tenant_id,
          os_auth_url, os_auth_system, endpoint_type,
+         os_project_domain_name, os_user_domain_name,
          service_type, bypass_url) = (
             (args.os_username, args.os_tenant_name or args.os_project_name,
              args.os_tenant_id, args.os_auth_url, args.os_auth_system,
+             args.os_project_domain_name, args.os_user_domain_name,
              args.endpoint_type, args.service_type, args.bypass_url)
         )
         insecure = args.insecure
@@ -528,6 +530,8 @@ class OpenStackCloudPulseShell(object):
                                 auth_url=os_auth_url,
                                 service_type=service_type,
                                 region_name=args.os_region_name,
+                                project_domain_name=args.os_project_domain_name,
+                                user_domain_name=args.os_user_domain_name,
                                 cacert=cacert,
                                 insecure=insecure,
                                 cloudpulse_url=bypass_url)
