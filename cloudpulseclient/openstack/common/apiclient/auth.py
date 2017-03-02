@@ -127,6 +127,8 @@ class BaseAuthPlugin(object):
         "tenant_name",
         "token",
         "auth_url",
+        "project_domain_name",
+        "user_domain_name",
     ]
 
     def __init__(self, auth_system=None, **kwargs):
