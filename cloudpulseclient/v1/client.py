@@ -25,18 +25,22 @@ class Client(object):
     def __init__(self, username=None, api_key=None, project_id=None,
                  project_name=None, auth_url=None, cloudpulse_url=None,
                  endpoint_type='publicURL', service_type='container',
+                 project_domain_name=None, user_domain_name=None,
                  region_name=None, input_auth_token=None, insecure=False,
                  cacert=None):
 
         keystone = None
         if not input_auth_token:
-            keystone = self.get_keystone_client(username=username,
-                                                api_key=api_key,
-                                                auth_url=auth_url,
-                                                project_id=project_id,
-                                                project_name=project_name,
-                                                insecure=insecure,
-                                                cacert=cacert)
+            keystone = self.get_keystone_client(
+                username=username,
+                api_key=api_key,
+                auth_url=auth_url,
+                project_id=project_id,
+                project_name=project_name,
+                project_domain_name=project_domain_name,
+                user_domain_name=user_domain_name,
+                insecure=insecure,
+                cacert=cacert)
 
             input_auth_token = keystone.auth_token
         if not input_auth_token:
@@ -80,6 +84,7 @@ class Client(object):
     @staticmethod
     def get_keystone_client(username=None, api_key=None, auth_url=None,
                             insecure=False, cacert=None, token=None,
+                            project_domain_name=None, user_domain_name=None,
                             project_id=None, project_name=None):
         if not auth_url:
             raise RuntimeError("No auth url specified")
@@ -94,6 +99,8 @@ class Client(object):
             cacert=cacert,
             tenant_id=project_id,
             tenant_name=project_name,
+            project_domain_name=project_domain_name,
+            user_domain_name=user_domain_name,
             auth_url=auth_url,
             endpoint=auth_url)
         client.authenticate()

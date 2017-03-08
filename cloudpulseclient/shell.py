@@ -33,6 +33,13 @@ from oslo_utils import encodeutils
 from oslo_utils import strutils
 import six
 
+from cloudpulseclient.openstack.common.apiclient import auth
+from cloudpulseclient.openstack.common.apiclient import exceptions as exc
+from cloudpulseclient.openstack.common import cliutils
+from cloudpulseclient.v1 import client
+from cloudpulseclient.v1 import shell as shell_v1
+from cloudpulseclient import version
+
 HAS_KEYRING = False
 all_errors = ValueError
 try:
@@ -48,13 +55,6 @@ try:
         pass
 except ImportError:
     pass
-
-from cloudpulseclient.openstack.common.apiclient import auth
-from cloudpulseclient.openstack.common.apiclient import exceptions as exc
-from cloudpulseclient.openstack.common import cliutils
-from cloudpulseclient.v1 import client
-from cloudpulseclient.v1 import shell as shell_v1
-from cloudpulseclient import version
 
 DEFAULT_API_VERSION = '1'
 DEFAULT_ENDPOINT_TYPE = 'publicURL'
@@ -521,16 +521,19 @@ class OpenStackCloudPulseShell(object):
                         '--os-password, env[OS_PASSWORD], or '
                         'prompted response')
 
-        self.cs = client.Client(username=os_username,
-                                api_key=os_password,
-                                project_id=os_tenant_id,
-                                project_name=os_tenant_name,
-                                auth_url=os_auth_url,
-                                service_type=service_type,
-                                region_name=args.os_region_name,
-                                cacert=cacert,
-                                insecure=insecure,
-                                cloudpulse_url=bypass_url)
+        self.cs = client.Client(
+            username=os_username,
+            api_key=os_password,
+            project_id=os_tenant_id,
+            project_name=os_tenant_name,
+            auth_url=os_auth_url,
+            service_type=service_type,
+            region_name=args.os_region_name,
+            project_domain_name=args.os_project_domain_name,
+            user_domain_name=args.os_user_domain_name,
+            cacert=cacert,
+            insecure=insecure,
+            cloudpulse_url=bypass_url)
 
         args.func(self.cs, args)
 
