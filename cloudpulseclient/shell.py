@@ -294,9 +294,11 @@ class OpenStackCloudPulseShell(object):
                             metavar='<endpoint-type>',
                             default=cliutils.env(
                                 'CLOUDPULSE_ENDPOINT_TYPE',
-                                default=DEFAULT_ENDPOINT_TYPE),
-                            help='Defaults to env[CLOUDPULSE_ENDPOINT_TYPE] or'
-                            + DEFAULT_ENDPOINT_TYPE + '.')
+                                default=cliutils.env(
+                                    'OS_ENDPOINT_TYPE',
+                                    default=DEFAULT_ENDPOINT_TYPE)),
+                            help='Defaults to env[CLOUDPULSE_ENDPOINT_TYPE] '
+                                 'or' + DEFAULT_ENDPOINT_TYPE + '.')
         # NOTE(dtroyer): We can't add --endpoint_type here due to argparse
         #                thinking usage-list --end is ambiguous; but it
         #                works fine with only --endpoint-type present
@@ -533,7 +535,8 @@ class OpenStackCloudPulseShell(object):
             user_domain_name=args.os_user_domain_name,
             cacert=cacert,
             insecure=insecure,
-            cloudpulse_url=bypass_url)
+            cloudpulse_url=bypass_url,
+            endpoint_type=endpoint_type)
 
         args.func(self.cs, args)
 
